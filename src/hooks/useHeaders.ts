@@ -96,11 +96,13 @@ export default function useHeaders(
     let headersWithExpand: HeaderForRender[] = [];
     if (!ifHasExpandSlot.value) {
       headersWithExpand = headersSorting;
-    } else {
+    }
+     else {
       const headerExpand: HeaderForRender = (fixedExpand.value || hasFixedColumnsFromUser.value) ? {
         text: '', value: 'expand', fixed: true, width: expandColumnWidth.value,
       } : { text: '', value: 'expand' };
-      headersWithExpand = [headerExpand, ...headersSorting];
+      // headersWithExpand = [headerExpand, ...headersSorting];
+      headersWithExpand = headersSorting;
     }
     // show index
     let headersWithIndex: HeaderForRender[] = [];

@@ -237,7 +237,8 @@ table {
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
-    transform: rotate(-45deg);
+    // transform: rotate(-45deg);
+    transform: rotate(-135deg);
     transition: 0.2s;
     &.expanding {
       transform: rotate(45deg);
@@ -313,4 +314,10 @@ table {
   top: 0px;
   left: 0px;
   z-index: 1;
+}
+
+.expandable-column{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
