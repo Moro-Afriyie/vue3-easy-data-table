@@ -146,7 +146,7 @@
 								<template v-if="slots[`item-${column}`]">
 									<template v-if="column === expandableHeaderColumn">
 										<div class="expandable-column">
-											<span>{{ generateColumnContent(column, item) }}</span>
+											<slot :name="`item-${column}`" v-bind="item" />
 											<i
 												class="expand-icon"
 												:class="{
