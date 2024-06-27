@@ -143,7 +143,24 @@
 										: null
 								"
 							>
-								<slot v-if="slots[`item-${column}`]" :name="`item-${column}`" v-bind="item" />
+								<template v-if="slots[`item-${column}`]">
+									<template v-if="column === expandableHeaderColumn">
+										<div class="expandable-column">
+											<span>{{ generateColumnContent(column, item) }}</span>
+											<i
+												class="expand-icon"
+												:class="{
+													expanding: expandingItemIndexList.includes(
+														prevPageEndIndex + index
+													),
+												}"
+											/>
+										</div>
+									</template>
+									<template v-else>
+										<slot :name="`item-${column}`" v-bind="item" />
+									</template>
+								</template>
 								<slot
 									v-else-if="slots[`item-${column.toLowerCase()}`]"
 									:name="`item-${column.toLowerCase()}`"

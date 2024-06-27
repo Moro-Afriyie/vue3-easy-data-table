@@ -45,6 +45,9 @@
 			@update-total-items="updateTotalItems"
 			show-index-symbol="$"
 		>
+			<template #item-name="item">
+				<div style="padding: 15px">{{ item.name }} is good</div>
+			</template>
 			<!-- <template #customize-headers>
         <thead class="my-static-header">
           <tr>
