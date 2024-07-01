@@ -96,6 +96,105 @@
 							headers: headersForRender,
 						}"
 					/>
+					<!--begin the section for fullpage metrics-->
+					<template v-if="fullPageMetrics">
+						<tr
+							class="full-page-metrics-row"
+							@click="
+								($event) => {
+									clickRow(fullPageMetrics, 'single', $event);
+									clickRowToExpand &&
+										updateExpandingItemIndexList(
+											100000000000000 + prevPageEndIndex,
+											fullPageMetrics,
+											$event
+										);
+								}
+							"
+						>
+							<td
+								v-for="(column, i) in headerColumns"
+								:key="i"
+								:style="getFixedDistance(column, 'td')"
+								:class="[
+									{
+										shadow: column === lastFixedColumn,
+										'can-expand': column === expandableHeaderColumn,
+										// eslint-disable-next-line max-len
+									},
+									typeof bodyItemClassName === 'string'
+										? bodyItemClassName
+										: bodyItemClassName(column, index + 1),
+									`direction-${bodyTextDirection}`,
+								]"
+							>
+								<template v-if="slots[`item-${column}`]">
+									<template v-if="column === expandableHeaderColumn">
+										<div class="expandable-column">
+											<slot :name="`item-${column}`" v-bind="fullPageMetrics" />
+											<i
+												class="expand-icon"
+												:class="{
+													expanding: expandingItemIndexList.includes(
+														prevPageEndIndex + 100000000000000
+													),
+												}"
+											/>
+										</div>
+									</template>
+									<template v-else>
+										<slot :name="`item-${column}`" v-bind="fullPageMetrics" />
+									</template>
+								</template>
+								<slot
+									v-else-if="slots[`item-${column.toLowerCase()}`]"
+									:name="`item-${column.toLowerCase()}`"
+									v-bind="fullPageMetrics"
+								/>
+
+								<template v-else-if="column === 'checkbox'">
+									<SingleSelectCheckBox
+										:checked="fullPageMetrics[column]"
+										@change="toggleSelectItem(fullPageMetrics)"
+									/>
+								</template>
+								<slot v-else-if="slots['item']" name="item" v-bind="{ column, item }" />
+								<template v-else>
+									<template v-if="column === expandableHeaderColumn">
+										<div class="expandable-column">
+											<span>{{ generateColumnContent(column, fullPageMetrics) }}</span>
+											<i
+												class="expand-icon"
+												:class="{
+													expanding: expandingItemIndexList.includes(
+														prevPageEndIndex + 100000000000000
+													),
+												}"
+											/>
+										</div>
+									</template>
+									<template v-else>
+										{{ generateColumnContent(column, fullPageMetrics) }}
+									</template>
+								</template>
+							</td>
+						</tr>
+						<!--begin slot for fullpage metrics-->
+						<template
+							v-if="
+								ifHasExpandSlot && expandingItemIndexList.includes(100000000000000 + prevPageEndIndex)
+							"
+							:class="[
+								typeof bodyExpandRowClassName === 'string'
+									? bodyExpandRowClassName
+									: bodyExpandRowClassName(fullPageMetrics, index + 1),
+							]"
+						>
+							<slot name="expand-full-page-metrics" v-bind="fullPageMetrics" />
+						</template>
+						<!--end slot for fullpage metrics-->
+					</template>
+					<!--end the section for fullpage Metrics-->
 					<template v-for="(item, index) in pageItems" :key="index">
 						<tr
 							:class="[
@@ -387,6 +486,7 @@ const {
 	rowsOfPageSeparatorMessage,
 	showIndexSymbol,
 	preventContextMenuRow,
+	fullPageMetrics,
 } = toRefs(props);
 
 // style related computed variables
@@ -519,12 +619,12 @@ const prevPageEndIndex = computed(() => {
 const { expandingItemIndexList, updateExpandingItemIndexList, clearExpandingItemIndexList } = useExpandableRow(
 	pageItems,
 	prevPageEndIndex,
-	emits
+	emits,
+	fullPageMetrics
 );
 
 const { fixedHeaders, lastFixedColumn, fixedColumnsInfos } = useFixedColumn(headersForRender);
 const expandableHeaderColumn = (headersForRender as any).value.filter((i) => i.expandable)[0].value;
-console.log('expandableColumns: ', expandableHeaderColumn);
 
 // console.log('headers for render: ', headersForRender);
 

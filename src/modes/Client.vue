@@ -44,6 +44,7 @@
 			@update-page-items="updateItems"
 			@update-total-items="updateTotalItems"
 			show-index-symbol="$"
+			:full-page-metrics="fullPageMetrics"
 		>
 			<template #item-name="item">
 				<div style="padding: 15px">{{ item.name }} is good</div>
@@ -67,6 +68,30 @@
           </tr>
         </thead>
       </template> -->
+			<template #expand-full-page-metrics="fullPageMetrics">
+				<tr class="" data-v-1bcc6778="">
+					<td class="direction-left" data-v-1bcc6778="">
+						<div
+							class="easy-checkbox"
+							data-v-730f7852=""
+							data-v-1bcc6778=""
+							style="--730f7852-themeColor: #1d90ff"
+						>
+							<input type="checkbox" data-v-730f7852="" /><label for="checbox" data-v-730f7852=""></label>
+						</div>
+					</td>
+					<td class="direction-left" data-v-1bcc6778="">1</td>
+					<td class="colume_name-index_1 direction-left" data-v-1bcc6778="">Kevin Durant</td>
+					<td class="direction-left" data-v-1bcc6778=""></td>
+					<td class="direction-left" data-v-1bcc6778="">7</td>
+					<td class="direction-left" data-v-1bcc6778="">F</td>
+					<td class="direction-left" data-v-1bcc6778="">6-10</td>
+					<td class="direction-left" data-v-1bcc6778="">240</td>
+					<td class="direction-left" data-v-1bcc6778="">Texas-Austin</td>
+					<td class="direction-left" data-v-1bcc6778="">USA</td>
+				</tr>
+			</template>
+
 			<template #expand="item">
 				<tr class="" data-v-1bcc6778="">
 					<td class="direction-left" data-v-1bcc6778="">
@@ -246,6 +271,15 @@ const items = ref<Item[]>([
 	},
 ]);
 
+const fullPageMetrics = {
+	name: 'Full Page Metrics',
+	firstName: 'GSW',
+	number: 30,
+	position: 'G',
+	indicator: { height: '6-2', weight: 185 },
+	lastAttended: 'Davidson',
+	country: 'USA',
+};
 // const items = ref<Item[]>(mockClientItems());
 
 // const headers: Header[] = [
