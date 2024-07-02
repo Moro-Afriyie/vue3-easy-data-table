@@ -11,7 +11,7 @@ export default function useExpandableRow(
 	const expandingItemIndexList = ref<number[]>([]);
 
 	const updateExpandingItemIndexList = (expandingItemIndex: number, expandingItem: Item, event: Event) => {
-		expandingItemIndexList.value = [];
+		// expandingItemIndexList.value = [];
 		event.stopPropagation();
 		const index = expandingItemIndexList.value.indexOf(expandingItemIndex);
 		if (index !== -1) {
