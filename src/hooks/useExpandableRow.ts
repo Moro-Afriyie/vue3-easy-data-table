@@ -11,12 +11,12 @@ export default function useExpandableRow(
 	const expandingItemIndexList = ref<number[]>([]);
 
 	const updateExpandingItemIndexList = (expandingItemIndex: number, expandingItem: Item, event: Event) => {
-		// expandingItemIndexList.value = [];
 		event.stopPropagation();
 		const index = expandingItemIndexList.value.indexOf(expandingItemIndex);
 		if (index !== -1) {
 			expandingItemIndexList.value.splice(index, 1);
 		} else {
+			expandingItemIndexList.value = [];
 			let currentPageExpandIndex = items.value.findIndex(
 				(item) => JSON.stringify(item) === JSON.stringify(expandingItem)
 			);
