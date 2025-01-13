@@ -35,11 +35,7 @@
               // eslint-disable-next-line max-len
               }, typeof headerItemClassName === 'string' ? headerItemClassName : headerItemClassName(header as Header, index + 1)]"
 							:style="getFixedDistance(header.value)"
-							@click.stop="
-								header.sortable && header.sortType
-									? updateSortField(header.value, header.sortType)
-									: null
-							"
+							@click.stop="header.sortable && header.sortType ? updateSortField(header.value, header.sortType) : null"
 						>
 							<MultipleSelectCheckBox
 								v-if="header.text === 'checkbox'"
@@ -48,11 +44,7 @@
 								@change="toggleSelectAll"
 							/>
 							<span v-else class="header" :class="`direction-${headerTextDirection}`">
-								<slot
-									v-if="slots[`header-${header.value}`]"
-									:name="`header-${header.value}`"
-									v-bind="header"
-								/>
+								<slot v-if="slots[`header-${header.value}`]" :name="`header-${header.value}`" v-bind="header" />
 								<slot
 									v-else-if="slots[`header-${header.value.toLowerCase()}`]"
 									:name="`header-${header.value.toLowerCase()}`"
@@ -62,12 +54,41 @@
 								<span v-else class="header-text">
 									{{ header.text }}
 								</span>
-								<i
+								<template v-if="header.sortable">
+									<svg
+										v-if="header.sortType === 'none'"
+										xmlns="http://www.w3.org/2000/svg"
+										width="14"
+										height="10"
+										viewBox="0 0 14 10"
+										fill="none"
+									>
+										<path d="M3 5H11M1 1H13M5 9H9" stroke="#A4A7AE" stroke-linecap="round" stroke-linejoin="round" />
+									</svg>
+
+									<svg
+										v-else
+										width="17"
+										height="16"
+										viewBox="0 0 17 16"
+										fill="none"
+										xmlns="http://www.w3.org/2000/svg"
+										:style="{ transform: header.sortType === 'asc' ? 'scaleY(-1)' : 'scaleY(1)' }"
+									>
+										<path
+											d="M9 8.05556H13.3333M9 3.72222H15.5M9 12.3889H11.1667M4.66667 13.1111V3M4.66667 13.1111L2.5 10.9444M4.66667 13.1111L6.83333 10.9444"
+											stroke="#2EC666"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+									</svg>
+								</template>
+								<!-- <i
 									v-if="header.sortable"
 									:key="header.sortType ? header.sortType : 'none'"
 									class="sortType-icon"
 									:class="{ desc: header.sortType === 'desc' }"
-								></i>
+								></i> -->
 								<span v-if="multiSort && isMultiSorting(header.value)" class="multi-sort__number">
 									{{ getMultiSortNumber(header.value) }}
 								</span>
@@ -104,11 +125,7 @@
 								($event) => {
 									clickRow(fullPageMetrics, 'single', $event);
 									clickRowToExpand &&
-										updateExpandingItemIndexList(
-											100000000000000 + prevPageEndIndex,
-											fullPageMetrics,
-											$event
-										);
+										updateExpandingItemIndexList(100000000000000 + prevPageEndIndex, fullPageMetrics, $event);
 								}
 							"
 						>
@@ -122,9 +139,7 @@
 										'can-expand': column === expandableHeaderColumn,
 										// eslint-disable-next-line max-len
 									},
-									typeof bodyItemClassName === 'string'
-										? bodyItemClassName
-										: bodyItemClassName(column, index + 1),
+									typeof bodyItemClassName === 'string' ? bodyItemClassName : bodyItemClassName(column, index + 1),
 									`direction-${bodyTextDirection}`,
 								]"
 							>
@@ -135,9 +150,7 @@
 											<i
 												class="expand-icon"
 												:class="{
-													expanding: expandingItemIndexList.includes(
-														prevPageEndIndex + 100000000000000
-													),
+													expanding: expandingItemIndexList.includes(prevPageEndIndex + 100000000000000),
 												}"
 											/>
 										</div>
@@ -166,9 +179,7 @@
 											<i
 												class="expand-icon"
 												:class="{
-													expanding: expandingItemIndexList.includes(
-														prevPageEndIndex + 100000000000000
-													),
+													expanding: expandingItemIndexList.includes(prevPageEndIndex + 100000000000000),
 												}"
 											/>
 										</div>
@@ -181,9 +192,7 @@
 						</tr>
 						<!--begin slot for fullpage metrics-->
 						<template
-							v-if="
-								ifHasExpandSlot && expandingItemIndexList.includes(100000000000000 + prevPageEndIndex)
-							"
+							v-if="ifHasExpandSlot && expandingItemIndexList.includes(100000000000000 + prevPageEndIndex)"
 							:class="[
 								typeof bodyExpandRowClassName === 'string'
 									? bodyExpandRowClassName
@@ -199,15 +208,12 @@
 						<tr
 							:class="[
 								{ 'even-row': (index + 1) % 2 === 0 },
-								typeof bodyRowClassName === 'string'
-									? bodyRowClassName
-									: bodyRowClassName(item, index + 1),
+								typeof bodyRowClassName === 'string' ? bodyRowClassName : bodyRowClassName(item, index + 1),
 							]"
 							@click="
 								($event) => {
 									clickRow(item, 'single', $event);
-									clickRowToExpand &&
-										updateExpandingItemIndexList(index + prevPageEndIndex, item, $event);
+									clickRowToExpand && updateExpandingItemIndexList(index + prevPageEndIndex, item, $event);
 								}
 							"
 							@dblclick="
@@ -231,9 +237,7 @@
 										'can-expand': column === expandableHeaderColumn,
 										// eslint-disable-next-line max-len
 									},
-									typeof bodyItemClassName === 'string'
-										? bodyItemClassName
-										: bodyItemClassName(column, index + 1),
+									typeof bodyItemClassName === 'string' ? bodyItemClassName : bodyItemClassName(column, index + 1),
 									`direction-${bodyTextDirection}`,
 								]"
 								@click="
@@ -249,9 +253,7 @@
 											<i
 												class="expand-icon"
 												:class="{
-													expanding: expandingItemIndexList.includes(
-														prevPageEndIndex + index
-													),
+													expanding: expandingItemIndexList.includes(prevPageEndIndex + index),
 												}"
 											/>
 										</div>
@@ -277,9 +279,7 @@
 											<i
 												class="expand-icon"
 												:class="{
-													expanding: expandingItemIndexList.includes(
-														prevPageEndIndex + index
-													),
+													expanding: expandingItemIndexList.includes(prevPageEndIndex + index),
 												}"
 											/>
 										</div>
@@ -686,7 +686,7 @@ watch(
 watch(
 	pageItems,
 	(value) => {
-		emits('updatePageItems', value);
+		emits('updatePageItems', { pageItems: value, rowsPerPage: rowsPerPageRef.value });
 	},
 	{ deep: true }
 );

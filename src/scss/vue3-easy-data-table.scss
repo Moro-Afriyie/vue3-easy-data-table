@@ -269,7 +269,15 @@ vue3-easy-data-table__body {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	// justify-content: flex-end;
+	justify-content: space-between;
+
+	height: 76px;
+	padding: 16px 18px;
+
+	border-top: 1px solid #e9eaeb;
+	border-right: 1px solid #e9eaeb;
+	background: #fff;
 
 	.pagination__rows-per-page {
 		display: flex;

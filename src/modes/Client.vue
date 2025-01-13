@@ -22,7 +22,7 @@
 			:items="items"
 			:search-field="searchField"
 			:search-value="searchValue"
-			:rows-per-page="10"
+			:rows-per-page="rowsPerPage"
 			buttons-pagination
 			:sort-by="sortBy"
 			:sort-type="sortType"
@@ -45,9 +45,55 @@
 			@update-total-items="updateTotalItems"
 			show-index-symbol="$"
 			:full-page-metrics="fullPageMetrics"
+			:rows-per-page-message="'Rows/Page:'"
 		>
 			<template #item-name="item">
 				<div style="padding: 15px">{{ item.name }} is good</div>
+			</template>
+			<template
+				#pagination="{
+					isFirstPage,
+					isLastPage,
+					currentPaginationNumber,
+					maxPaginationNumber,
+					nextPage,
+					prevPage,
+					rowsPerPageActiveOption,
+				}"
+			>
+				<div class="data-table-pagination-container">
+					<button class="page-controls" :disabled="isFirstPage" @click="prevPage">
+						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+							<path
+								d="M16.333 9.99984H4.66634M4.66634 9.99984L10.4997 4.1665M4.66634 9.99984L10.4997 15.8332"
+								stroke="#079455"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					</button>
+					<div class="">
+						<span>
+							{{
+								'1 - ' +
+								(rowsPerPage * currentPaginationNumber > items.length
+									? items.length
+									: rowsPerPage * currentPaginationNumber)
+							}}
+							of {{ items.length }}
+						</span>
+					</div>
+					<button class="page-controls" :disabled="isLastPage" @click="nextPage">
+						<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+							<path
+								d="M4.66699 9.99984H16.3337M16.3337 9.99984L10.5003 4.1665M16.3337 9.99984L10.5003 15.8332"
+								stroke="#079455"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/>
+						</svg>
+					</button>
+				</div>
 			</template>
 			<!-- <template #customize-headers>
         <thead class="my-static-header">
@@ -71,12 +117,7 @@
 			<template #expand-full-page-metrics="fullPageMetrics">
 				<tr class="" data-v-1bcc6778="">
 					<td class="direction-left" data-v-1bcc6778="">
-						<div
-							class="easy-checkbox"
-							data-v-730f7852=""
-							data-v-1bcc6778=""
-							style="--730f7852-themeColor: #1d90ff"
-						>
+						<div class="easy-checkbox" data-v-730f7852="" data-v-1bcc6778="" style="--730f7852-themeColor: #1d90ff">
 							<input type="checkbox" data-v-730f7852="" /><label for="checbox" data-v-730f7852=""></label>
 						</div>
 					</td>
@@ -95,12 +136,7 @@
 			<template #expand="item">
 				<tr class="" data-v-1bcc6778="">
 					<td class="direction-left" data-v-1bcc6778="">
-						<div
-							class="easy-checkbox"
-							data-v-730f7852=""
-							data-v-1bcc6778=""
-							style="--730f7852-themeColor: #1d90ff"
-						>
+						<div class="easy-checkbox" data-v-730f7852="" data-v-1bcc6778="" style="--730f7852-themeColor: #1d90ff">
 							<input type="checkbox" data-v-730f7852="" /><label for="checbox" data-v-730f7852=""></label>
 						</div>
 					</td>
@@ -116,12 +152,7 @@
 				</tr>
 				<tr class="" data-v-1bcc6778="">
 					<td class="direction-left" data-v-1bcc6778="">
-						<div
-							class="easy-checkbox"
-							data-v-730f7852=""
-							data-v-1bcc6778=""
-							style="--730f7852-themeColor: #1d90ff"
-						>
+						<div class="easy-checkbox" data-v-730f7852="" data-v-1bcc6778="" style="--730f7852-themeColor: #1d90ff">
 							<input type="checkbox" data-v-730f7852="" /><label for="checbox" data-v-730f7852=""></label>
 						</div>
 					</td>
@@ -137,12 +168,7 @@
 				</tr>
 				<tr class="" data-v-1bcc6778="">
 					<td class="direction-left" data-v-1bcc6778="">
-						<div
-							class="easy-checkbox"
-							data-v-730f7852=""
-							data-v-1bcc6778=""
-							style="--730f7852-themeColor: #1d90ff"
-						>
+						<div class="easy-checkbox" data-v-730f7852="" data-v-1bcc6778="" style="--730f7852-themeColor: #1d90ff">
 							<input type="checkbox" data-v-730f7852="" /><label for="checbox" data-v-730f7852=""></label>
 						</div>
 					</td>
@@ -219,6 +245,8 @@ const switchToNested300 = () => {
 	items.value = mockClientNestedItems(300);
 };
 
+const rowsPerPage = 1;
+
 const switchToNested = () => {
 	items.value = mockClientNestedItems(100);
 };
@@ -241,12 +269,14 @@ const updateFilter = (items: Item[]) => {
 };
 
 const updateItems = (items: Item[]) => {
-	console.log('page items');
+	console.log('page items updated..');
 	console.log(JSON.stringify(items));
+	console.log('length: ', items.length);
+	// console.log('rowsPerPageActiveOption: ', rowsPerPageActiveOption);
 };
 
 const updateTotalItems = (items: Item[]) => {
-	console.log('total items');
+	console.log('total items updated..');
 	console.log(JSON.stringify(items));
 };
 
@@ -421,7 +451,7 @@ const updateRowsPerPageSelect = (e: Event) => {
 
 <style>
 .hc-table {
-	--easy-table-border: 1px solid #445269;
+	/* --easy-table-border: 1px solid #445269;
 	--easy-table-row-border: 1px solid #445269;
 
 	--easy-table-header-font-size: 12px;
@@ -429,7 +459,7 @@ const updateRowsPerPageSelect = (e: Event) => {
 	--easy-table-header-font-color: #c1cad4;
 	--easy-table-header-background-color: #2d3a4f;
 
-	/* --easy-table-header-item-padding: 10px 15px; */
+	/* --easy-table-header-item-padding: 10px 15px; 
 
 	--easy-table-body-even-row-font-color: #fff;
 	--easy-table-body-even-row-background-color: #4c5d7a;
@@ -442,7 +472,7 @@ const updateRowsPerPageSelect = (e: Event) => {
 	--easy-table-body-row-hover-font-color: #2d3a4f;
 	--easy-table-body-row-hover-background-color: #eee;
 
-	/* --easy-table-body-item-padding: 10px 15px; */
+	/* --easy-table-body-item-padding: 10px 15px; 
 
 	--easy-table-footer-background-color: #2d3a4f;
 	--easy-table-footer-font-color: #c0c7d2;
@@ -459,12 +489,40 @@ const updateRowsPerPageSelect = (e: Event) => {
 	--easy-table-scrollbar-corner-color: #4c5d7a;
 	--easy-table-scrollbar-thumb-color: #2d3a4f;
 
-	--easy-table-loading-mask-background-color: #2d3a4f;
+	--easy-table-loading-mask-background-color: #2d3a4f; */
 }
 
 .my-static-header th {
 	color: white;
 	border-right: 1px solid #445269;
 	border-bottom: 1px solid #445269;
+}
+
+.data-table-pagination-container {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1rem;
+}
+
+.pagination__items-index {
+	display: none;
+}
+.page-controls {
+	border: none;
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	height: 40px;
+	padding: 8px 12px;
+	align-items: center;
+	gap: 8px;
+	border-radius: 12px;
+	border: 1px solid #e9eaeb;
 }
 </style>
