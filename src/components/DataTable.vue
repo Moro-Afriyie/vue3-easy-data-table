@@ -367,7 +367,24 @@
 
 			<div v-if="!pageItems.length && !loading" class="vue3-easy-data-table__message">
 				<slot name="empty-message">
-					{{ emptyMessage }}
+					<!-- {{ emptyMessage }} -->
+					<div class="no-data-container">
+						<div class="content">
+							<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="icon">
+								<!-- Main circle -->
+								<circle cx="60" cy="60" r="54" class="main-circle"></circle>
+								<!-- Table columns representation -->
+								<rect x="35" y="40" width="12" height="40" class="column"></rect>
+								<rect x="55" y="40" width="12" height="40" class="column"></rect>
+								<rect x="75" y="40" width="12" height="40" class="column"></rect>
+								<!-- Error indicator -->
+								<circle cx="93" cy="27" r="15" class="error-indicator"></circle>
+								<path d="M87 21L99 33M99 21L87 33" class="cross-line"></path>
+							</svg>
+							<h3 class="title">No Data Found</h3>
+							<p class="message">No items were found to display.</p>
+						</div>
+					</div>
 				</slot>
 			</div>
 		</div>
