@@ -369,7 +369,7 @@
 				<slot name="empty-message">
 					<!-- {{ emptyMessage }} -->
 					<div class="no-data-container">
-						<div class="content">
+						<div class="content" v-show="!searchValue">
 							<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="icon">
 								<!-- Main circle -->
 								<circle cx="60" cy="60" r="54" class="main-circle"></circle>
@@ -381,8 +381,40 @@
 								<circle cx="93" cy="27" r="15" class="error-indicator"></circle>
 								<path d="M87 21L99 33M99 21L87 33" class="cross-line"></path>
 							</svg>
-							<h3 class="title">No Data Found</h3>
-							<p class="message">No items were found to display.</p>
+							<div>
+								<h3 class="title">No Data Found</h3>
+								<p class="message">No items were found to display.</p>
+							</div>
+						</div>
+						<div class="content" v-show="searchValue">
+							<svg
+								width="80"
+								height="80"
+								viewBox="0 0 24 24"
+								class="opacity-50"
+								:class="{
+									'w-12 h-12 mb-4': size === 'sm',
+									'w-16 h-16 mb-5': size === 'md',
+									'w-20 h-20 mb-5': size === 'lg',
+									'w-20 h-20 mb-6': size === 'xl' || size === 'xxl',
+								}"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M21 21L16.65 16.65M11 6C13.7614 6 16 8.23858 16 11M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+									stroke="#CBD5E0"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+
+							<p class="message">
+								We couldn't find any results for "{{ searchValue }}".
+								<br />
+								Try adjusting your search to find what you're looking for.
+							</p>
 						</div>
 					</div>
 				</slot>
