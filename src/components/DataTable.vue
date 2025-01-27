@@ -241,9 +241,12 @@
 									`direction-${bodyTextDirection}`,
 								]"
 								@click="
-									column === expandableHeaderColumn
-										? updateExpandingItemIndexList(index + prevPageEndIndex, item, $event)
-										: null
+									($event) => {
+										if (column === expandableHeaderColumn) {
+											clickRow(item, 'single', $event);
+											updateExpandingItemIndexList(index + prevPageEndIndex, item, $event);
+										}
+									}
 								"
 							>
 								<template v-if="slots[`item-${column}`]">

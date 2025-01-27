@@ -46,6 +46,7 @@
 			show-index-symbol="$"
 			:full-page-metrics="fullPageMetrics"
 			:rows-per-page-message="'Rows/Page:'"
+			@click-row="rowClicked"
 		>
 			<template #item-name="item">
 				<div style="padding: 15px">{{ item.name }} is good</div>
@@ -325,6 +326,7 @@ const fullPageMetrics = {
 const itemsSelected = ref<Item[]>([items.value[1]]);
 
 const showItem = (item: ClickRowArgument) => {
+	console.log('item clicked show item: ', item);
 	console.log('item 111');
 	console.log(JSON.stringify(item));
 };
@@ -399,6 +401,11 @@ const rowsPerPageActiveOption = computed(() => dataTable.value?.rowsPerPageActiv
 
 const updateRowsPerPageSelect = (e: Event) => {
 	dataTable.value.updateRowsPerPageActiveOption(Number((e.target as HTMLInputElement).value));
+};
+
+const rowClicked = (item) => {
+	console.log('row clicked...');
+	console.log('item: ', item);
 };
 
 // const {
