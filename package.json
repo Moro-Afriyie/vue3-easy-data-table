@@ -1,9 +1,9 @@
 {
-	"name": "heatmapcom-main-data-table-component-v2",
+	"name": "vue3-heatmapcom-data-table-component-v2",
 	"author": "HC200ok",
 	"description": "A customizable and easy-to-use data table component made with Vue.js 3.x.",
 	"private": false,
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"types": "./types/main.d.ts",
 	"license": "MIT",
 	"files": [

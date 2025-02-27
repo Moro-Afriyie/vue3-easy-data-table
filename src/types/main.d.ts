@@ -38,6 +38,7 @@ export type Header = {
 	fixed?: boolean;
 	width?: number;
 	expandable?: boolean;
+	tooltipText?: string;
 };
 
 export type ServerOptions = {

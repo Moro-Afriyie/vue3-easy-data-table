@@ -1,4 +1,22 @@
 <template>
+	<div style="position: relative">
+		<div
+			v-show="showTooltip"
+			ref="tooltipRef"
+			class="data_table_tooltip"
+			style="
+				width: max-content;
+				position: absolute;
+				top: -45px;
+				z-index: 3;
+				display: block;
+				transform: translateX(-100%);
+			"
+		>
+			{{ tooltipText }}
+			<div class="data_table_tooltip-arrow"></div>
+		</div>
+	</div>
 	<div ref="dataTable" class="vue3-easy-data-table" :class="[tableClassName]">
 		<div
 			ref="tableBody"
@@ -26,7 +44,8 @@
 						<th
 							v-for="(header, index) in headersForRender"
 							:key="index"
-							:class="[{
+							:class="[
+								 header.value,{
                 sortable: header.sortable,
                 'none': header.sortable && header.sortType === 'none',
                 'desc': header.sortable && header.sortType === 'desc',
@@ -35,8 +54,15 @@
               // eslint-disable-next-line max-len
               }, typeof headerItemClassName === 'string' ? headerItemClassName : headerItemClassName(header as Header, index + 1)]"
 							:style="getFixedDistance(header.value)"
+							@mouseenter="
+								($event) => {
+									handleShowTooltip($event, header);
+								}
+							"
+							@mouseleave="showTooltip = false"
 							@click.stop="header.sortable && header.sortType ? updateSortField(header.value, header.sortType) : null"
 						>
+							{{ header.sortType }}
 							<MultipleSelectCheckBox
 								v-if="header.text === 'checkbox'"
 								:key="multipleSelectStatus"
@@ -701,6 +727,28 @@ const getFixedDistance = (column: string, type: 'td' | 'th' = 'th') => {
 		return `left: ${columInfo.distance}px;z-index: ${type === 'th' ? 3 : 1};position: sticky;`;
 	}
 	return undefined;
+};
+
+const showTooltip = ref(false);
+const tooltipRef = ref(null);
+const tooltipText = ref('');
+
+const handleShowTooltip = (event, header) => {
+	if (!header.tooltipText) {
+		showTooltip.value = false;
+		tooltipText.value = '';
+		tooltipRef.value.style.left = '0px';
+		return;
+	}
+
+	const left = event.target.getBoundingClientRect().left;
+
+	// set the tootip left to the header left and then show the tooltip
+
+	tooltipRef.value.style.left = `${left}px`;
+
+	showTooltip.value = true;
+	tooltipText.value = header.tooltipText;
 };
 
 watch(loading, (newVal, oldVal) => {

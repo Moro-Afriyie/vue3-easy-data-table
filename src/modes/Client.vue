@@ -240,8 +240,8 @@ import { mockClientNestedItems, mockClientItems, mockDuplicateClientNestedItems,
 
 const searchField = ref('name');
 const searchValue = ref('');
-const sortBy = ref(['indicator.weight', 'number']);
-const sortType = ref<SortType | SortType[] | undefined>(['desc', 'asc']);
+const sortBy = ref('number');
+const sortType = ref<SortType | SortType[] | undefined>('desc');
 const switchToNested300 = () => {
 	items.value = mockClientNestedItems(300);
 };
@@ -253,12 +253,12 @@ const switchToNested = () => {
 };
 const headers: Header[] = [
 	{ text: 'Name', value: 'name', expandable: true },
-	{ text: 'TEAM', value: 'team' },
+	{ text: 'TEAM', value: 'team', tooltipText: 'Hello world testing the tooltip' },
 	{ text: 'NUMBER', value: 'number', sortable: true },
 	{ text: 'POSITION', value: 'position' },
 	{ text: 'HEIGHT', value: 'indicator.height' },
-	{ text: 'WEIGHT (lbs)', value: 'indicator.weight', sortable: true },
-	{ text: 'LAST ATTENDED', value: 'lastAttended', width: 200 },
+	{ text: 'WEIGHT (lbs)', value: 'indicator.weight', sortable: true, tooltipText: 'Hello world testing the tooltip' },
+	{ text: 'LAST ATTENDED', value: 'lastAttended', width: 200, tooltipText: 'Hello world testing the tooltip' },
 	{ text: 'COUNTRY', value: 'country' },
 ];
 
