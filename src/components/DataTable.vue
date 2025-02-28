@@ -62,7 +62,6 @@
 							@mouseleave="showTooltip = false"
 							@click.stop="header.sortable && header.sortType ? updateSortField(header.value, header.sortType) : null"
 						>
-							{{ header.sortType }}
 							<MultipleSelectCheckBox
 								v-if="header.text === 'checkbox'"
 								:key="multipleSelectStatus"

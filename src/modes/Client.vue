@@ -246,7 +246,7 @@ const switchToNested300 = () => {
 	items.value = mockClientNestedItems(300);
 };
 
-const rowsPerPage = 1;
+const rowsPerPage = 50;
 
 const switchToNested = () => {
 	items.value = mockClientNestedItems(100);
