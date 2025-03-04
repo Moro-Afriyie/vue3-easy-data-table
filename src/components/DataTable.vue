@@ -776,8 +776,10 @@ watch([searchValue, filterOptions], () => {
 
 watch(
 	[currentPaginationNumber, clientSortOptions, searchField, searchValue, filterOptions],
-	() => {
-		clearExpandingItemIndexList();
+	(newVal, oldVal) => {
+		if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+			clearExpandingItemIndexList();
+		}
 	},
 	{ deep: true }
 );
